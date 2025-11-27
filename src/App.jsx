@@ -88,9 +88,9 @@ const App = () => {
               duration: result.duration || 0,
               language: result.language || 'Unknown',
               der: result.der !== undefined ? result.der : null,
-              speakerError: result.speaker_error !== undefined ? result.speaker_error : null,
-              missedSpeech: result.missed_speech !== undefined ? result.missed_speech : null,
-              falseAlarm: result.false_alarm !== undefined ? result.false_alarm : null,
+              speakerError: result.speaker_error !== null ? result.speaker_error : null,
+              missedSpeech: result.missed_speech !== null ? result.missed_speech : null,
+              falseAlarm: result.false_alarm !== null ? result.false_alarm : null,
               timelineData: result.timeline_data || [],
           });
           setStatusMessage('Analysis complete.');
@@ -118,7 +118,6 @@ const App = () => {
     {
       x: ['DER', 'Speaker Error', 'Missed Speech', 'False Alarm'],
       y: derMetrics,
-      ] : [0, 0, 0, 0], 
       type: 'bar',
       marker: { 
         color: derMetricsAvailable ? ['#dc3545', '#ffc107', '#20c997', '#007bff'] : ['#475569', '#475569', '#475569', '#475569'] 
@@ -126,61 +125,54 @@ const App = () => {
       name: derMetricsAvailable ? 'Error Rate' : 'No RTTM Provided',
     },
   ];
-  const renderTimeline = () => {
+ const renderTimeline = () => {
     if (analysisData.timelineData.length === 0) {
         return <p>Transcription data will appear here after successful analysis.</p>;
     }
-    let lastSpeaker = null;
-    const elements = [];
-    analysisData.timelineData.forEach((word, index) => {
+    const segments = [];
+    let currentSegment = null;
+    analysisData.timelineData.forEach((word) => {
         const { text, speaker, start, end } = word;
-        const isNewSpeaker = speaker !== lastSpeaker;
-        if (isNewSpeaker && index > 0) {
-            elements.push(<div key={`block-end-${index}`} />);
+        if (currentSegment === null || speaker !== currentSegment.speaker) {
+            if (currentSegment !== null) {
+                segments.push(currentSegment);
+            }
+            currentSegment = {
+                speaker: speaker,
+                words: [], 
+                startTime: start,
+                endTime: end,
+            };
         }
-        if (isNewSpeaker) {
-            elements.push(
-                <p key={`label-${index}`} >
-                    {speaker || 'Unknown Speaker'} <span>({start.toFixed(2)}s - {end.toFixed(2)}s)</span>
-                </p>
-            );
-        }
-        elements.push(
-            <span 
-                key={index} 
-                title={`Time: ${start.toFixed(2)}s to ${end.toFixed(2)}s`}
-            >
-                {text}
-            </span>
-        );
-        lastSpeaker = speaker;
+        currentSegment.words.push(text);
+        currentSegment.endTime = end;
     });
-    return elements;
-  };
-  const renderFileInput = (id, label, fileState, setter, accept) => (
-    <div>
-        <label htmlFor={id}>
-            {label}
-        </label>
-        <label htmlFor={id}>
-            {fileState ? (
-                <p>{fileState.name}</p>
-            ) : (
-                <>
-                    <p>+</p>
-                    <p>{label}</p>
-                </>
-            )}
-            <input 
-                id={id} 
-                name={id} 
-                type="file"  
-                accept={accept} 
-                onChange={handleFileChange(setter)} 
-            />
-        </label>
-    </div>
-  );
+    if (currentSegment !== null) {
+        segments.push(currentSegment);
+    }
+    return segments.map((segment, segIndex) => {
+        const style = getSpeakerStyle(segment.speaker);
+        const segmentText = segment.words.join(' ');
+        return (
+            <div
+                key={`segment-${segIndex}`}
+                className="transcription-segment"
+                style={{ 
+                    backgroundColor: style.background, 
+                    borderLeft: `5px solid ${style.color}`,
+                }}
+            >
+                <p className="speaker-label" style={{ color: style.color }}>
+                    {segment.speaker || 'Unknown Speaker'}
+                    <span className="timestamp">
+                        ({segment.startTime.toFixed(2)}s - {segment.endTime.toFixed(2)}s)
+                    </span>
+                </p>
+                <p className="segment-text">{segmentText}</p>
+            </div>
+        );
+    });
+};
   return (
       <div className="container">
         <header className="header">
