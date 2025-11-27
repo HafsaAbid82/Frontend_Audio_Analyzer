@@ -55,9 +55,14 @@ const App = () => {
     setter(selectedFile || null);
     if (selectedFile) {
       setStatusMessage(`File selected: ${selectedFile.name}`);
-      setStatusType(null);
+      setStatusType('neutral');
       setAnalysisData(initialAnalysisData);
-    }
+    } else (selectedFile) {
+  setStatusMessage('');
+  setStatusType(null);
+  setAnalysisData(initialAnalysisData);
+}
+
   };
   const onSubmit = useCallback(async (event) => {
     event.preventDefault();
@@ -218,9 +223,21 @@ const App = () => {
             </button>
           </form>
           {statusMessage && (
-            <div className={`status-message ${statusType === 'success' ? 'status-success' : 'status-error'}`}>
-              <span>{statusType === 'success' ? '✅ SUCCESS:' : '❌ ERROR:'} {statusMessage}</span>
-            </div>
+            <div className={`status-message ${
+  statusType === 'success'
+    ? 'status-success'
+    : statusType === 'error'
+    ? 'status-error'
+    : 'status-neutral'
+}`}>
+               <span>
+    {statusType === 'success'
+      ? ' SUCCESS:'
+      : statusType === 'error'
+      ? ' ERROR:'
+      : ' INFO:'} {statusMessage}
+  </span>
+</div>
           )}
         </div>
         <div className="grid-layout">
