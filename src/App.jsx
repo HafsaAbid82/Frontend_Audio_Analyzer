@@ -23,6 +23,27 @@ const SPEAKER_STYLES = {
     'Speaker_4': { color: '#6f42c1', background: '#f3ebfa' }, 
     'DEFAULT':   { color: '#6c757d', background: '#f8f9fa' }, 
 };
+const renderFileInput = (id, label, fileState, setter, accept) => (
+  <div className="file-upload-box">
+    <label htmlFor={id} className="file-upload-label">
+      {label}
+    </label>
+
+    <input
+      id={id}
+      type="file"
+      accept={accept}
+      onChange={(e) => setter(e.target.files[0] || null)}
+      className="file-input"
+    />
+
+    {fileState && (
+      <p className="file-selected">
+        Selected: {fileState.name}
+      </p>
+    )}
+  </div>
+);
 const initialAnalysisData = {
   isAnalyzed: false,
   filename: '',
