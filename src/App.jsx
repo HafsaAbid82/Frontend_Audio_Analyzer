@@ -13,7 +13,6 @@ const Plot = ({ data, layout }) => {
       }
     };
   }, [data, layout]);
-
   return <div ref={divRef} style={{ width: '100%', height: '100%' }} />;
 };
 const SPEAKER_STYLES = {
