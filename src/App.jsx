@@ -61,7 +61,6 @@ const App = () => {
   setStatusType(null);
   setAnalysisData(initialAnalysisData);
 }
-
   };
   const onSubmit = useCallback(async (event) => {
     event.preventDefault();
