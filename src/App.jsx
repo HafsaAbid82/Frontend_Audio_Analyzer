@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import Plotly from 'plotly.js-dist';
+import Plotly from 'plotly.js-dist-min';
 import './App.css';
 const Plot = ({ data, layout }) => {
   const divRef = useRef(null);
