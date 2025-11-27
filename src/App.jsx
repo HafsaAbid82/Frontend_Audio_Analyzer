@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import Plotly from 'plotly.js-dist-min';
+import Plotly from 'plotly.js-dist';
 import './App.css';
 const Plot = ({ data, layout }) => {
   const divRef = useRef(null);
@@ -107,20 +107,23 @@ const App = () => {
         setLoading(false);
     }
   }, [audioFile, rttmFile]);
+  const derMetricsAvailable = analysisData.der !== null;
+  const derMetrics = derMetricsAvailable ? [
+    analysisData.der,
+    analysisData.speakerError,
+    analysisData.missedSpeech,
+    analysisData.falseAlarm
+] : [0, 0, 0, 0];
   const plotData = [
     {
       x: ['DER', 'Speaker Error', 'Missed Speech', 'False Alarm'],
-      y: analysisData.der !== null ? [
-        analysisData.der,
-        analysisData.speakerError,
-        analysisData.missedSpeech,
-        analysisData.falseAlarm
+      y: derMetrics,
       ] : [0, 0, 0, 0], 
       type: 'bar',
       marker: { 
-        color: analysisData.der !== null ? ['#dc3545', '#ffc107', '#20c997', '#007bff'] : '#ced4da' 
+        color: derMetricsAvailable ? ['#dc3545', '#ffc107', '#20c997', '#007bff'] : ['#475569', '#475569', '#475569', '#475569'] 
       },
-      name: 'Error Rate',
+      name: derMetricsAvailable ? 'Error Rate' : 'No RTTM Provided',
     },
   ];
   const renderTimeline = () => {
@@ -267,7 +270,7 @@ const App = () => {
                     <Plot
                         data={plotData}
                         layout={{
-                            title: analysisData.isAnalyzed && analysisData.der !== null ? `Diarization Metrics for ${analysisData.filename}` : 'Upload Audio and RTTM to View Metrics',
+                            title: analysisData.isAnalyzed && derMetricsAvailable ? `Diarization Metrics for ${analysisData.filename}` : 'Upload Audio and RTTM to View Metrics',
                             font: { family: 'Arial', color: '#343a40' },
                             yaxis: { title: 'Error Percentage (0.0 - 1.0)', range: [0, 1] },
                             height: 400,
@@ -290,7 +293,7 @@ const App = () => {
                   <p>Duration: <span>{analysisData.duration ? `${analysisData.duration.toFixed(2)}s` : 'N/A'}</span></p>
                   <p>Language: <span>{analysisData.language || 'N/A'}</span></p>
                 </div>
-                {analysisData.der !== null ? (
+               {derMetricsAvailable ? (
                     <>
                         <p>
                             Overall DER: {(analysisData.der * 100).toFixed(2)}%
