@@ -75,7 +75,7 @@ const App = () => {
       if (rttmFile) {
           formData.append('rttm_file', rttmFile);
       }
-      const response = await fetch('https://huggingface.co/spaces/hafsaabd82/Audio-Analyzer/upload', {
+      const response = await fetch('https://hafsaabd82-audio-analyzer.hf.space/upload', {
           method: 'POST',
           body: formData,
       });
