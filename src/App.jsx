@@ -56,11 +56,7 @@ const App = () => {
       setStatusMessage(`File selected: ${selectedFile.name}`);
       setStatusType('neutral');
       setAnalysisData(initialAnalysisData);
-    } else (selectedFile) {
-  setStatusMessage('');
-  setStatusType(null);
-  setAnalysisData(initialAnalysisData);
-}
+    } 
   };
   const onSubmit = useCallback(async (event) => {
     event.preventDefault();
