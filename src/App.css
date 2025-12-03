@@ -250,3 +250,77 @@
     grid-template-columns: 1fr;
   }
 }
+/* ================================
+   EXTRA CLASSES (MATCHING YOUR THEME)
+   ================================ */
+
+.file-upload-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  border: 2px dashed #007bff;
+  border-radius: 6px;
+  background: #5d6a774e;
+  transition: all 0.3s ease;
+}
+
+.file-upload-box:hover {
+  background: #c3daf140;
+  border-color: #0056b3;
+}
+
+.file-upload-label {
+  font-weight: 600;
+  color: #cecde8;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-selected {
+  color: #ffffff;
+  font-size: 0.9rem;
+  word-break: break-word;
+}
+
+
+/* ================================
+   TRANSCRIPTION TIMELINE STYLING
+   ================================ */
+
+.transcription-output-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.transcription-segment {
+  padding: 15px 20px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(235, 232, 232, 0.3);
+  transition: background 0.2s ease;
+}
+
+.speaker-label {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.timestamp {
+  font-size: 0.85rem;
+  margin-left: 8px;
+  opacity: 0.7;
+}
+
+.segment-text {
+  font-size: 1rem;
+  color: #ffffff;
+  line-height: 1.6;
+}
+
