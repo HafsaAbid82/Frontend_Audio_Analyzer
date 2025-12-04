@@ -250,77 +250,105 @@
     grid-template-columns: 1fr;
   }
 }
-/* ================================
-   EXTRA CLASSES (MATCHING YOUR THEME)
-   ================================ */
 
+/* Additional classes used by App.jsx - kept minimal and consistent with dark theme */
 .file-upload-box {
   display: flex;
   flex-direction: column;
+  align-items: stretch;
   gap: 8px;
-  padding: 20px;
-  border: 2px dashed #007bff;
-  border-radius: 6px;
-  background: #5d6a774e;
-  transition: all 0.3s ease;
 }
-
-.file-upload-box:hover {
-  background: #c3daf140;
-  border-color: #0056b3;
-}
-
 .file-upload-label {
-  font-weight: 600;
-  color: #cecde8;
+  display: inline-block;
   cursor: pointer;
-  font-size: 0.95rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px dashed rgba(255,255,255,0.08);
+  color: #e6e6ef;
+  padding: 12px 14px;
+  border-radius: 6px;
+  text-align: left;
 }
-
-.file-input {
-  display: none;
-}
-
 .file-selected {
-  color: #ffffff;
+  color: #cfd3ee;
   font-size: 0.9rem;
-  word-break: break-word;
+  margin: 4px 0 0 0;
 }
-
-
-/* ================================
-   TRANSCRIPTION TIMELINE STYLING
-   ================================ */
-
 .transcription-output-container {
-  margin-top: 20px;
+  margin-top: 12px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
+  max-height: 50vh;
+  overflow-y: auto;
+  padding-right: 6px;
 }
-
 .transcription-segment {
-  padding: 15px 20px;
+  padding: 12px 14px;
   border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(235, 232, 232, 0.3);
-  transition: background 0.2s ease;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+  color: #0b0b0b;
 }
-
 .speaker-label {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 6px;
+  font-weight: 700;
+  margin: 0 0 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
-
 .timestamp {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  color: rgba(0,0,0,0.65);
   margin-left: 8px;
-  opacity: 0.7;
+  font-weight: 600;
 }
-
 .segment-text {
-  font-size: 1rem;
-  color: #ffffff;
-  line-height: 1.6;
+  margin: 0;
+  color: #1b1b1b;
+  line-height: 1.5;
 }
 
+/* Small utility classes used in App.jsx */
+.mt-8 { margin-top: 2rem; }
+.text-sm { font-size: 0.875rem; }
+.font-normal { font-weight: 400; }
+.text-gray-500 { color: #9aa0b4; }
+.ml-3 { margin-left: 0.75rem; }
+.italic { font-style: italic; }
+.flex { display: flex; }
+.justify-center { justify-content: center; }
+.flex-wrap { flex-wrap: wrap; }
+.gap-2 { gap: 8px; }
+.rounded-full { border-radius: 9999px; }
+.px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+.py-0\.5 { padding-top: 0.125rem; padding-bottom: 0.125rem; }
+.text-xs { font-size: 0.75rem; }
+.font-medium { font-weight: 600; }
+
+/* Small responsive tweaks for transcription list readability */
+@media (max-width: 520px) {
+  .transcription-segment { padding: 10px; }
+  .timestamp { display: none; }
+}
+
+/* Inline diarized output styling */
+.diarized-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: baseline;
+  color: #e8e8f0;
+  font-size: 0.95rem;
+}
+.diarized-part {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.speaker-inline {
+  font-weight: 700;
+  margin-right: 4px;
+}
+.diarized-text {
+  color: #dfe3f8;
+}
