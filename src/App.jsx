@@ -126,26 +126,16 @@ const App = () => {
             segments.push(currentSegment);
         }
         return segments.map((segment, segIndex) => {
-            const style = getSpeakerStyle(segment.speaker);
-            const segmentText = segment.words.join(' ');
-            return (
-                <div
-                    key={`segment-${segIndex}`}
-                    className="transcription-segment"
-                    style={{
-                        backgroundColor: style.background,
-                        borderLeft: `5px solid ${style.color}`,
-                    }}
-                >
-                    <p className="speaker-label" style={{ color: style.color }}>
-                        {segment.speaker || 'Unknown Speaker'}
-                        <span className="timestamp">
-                            ({segment.startTime.toFixed(2)}s - {segment.endTime.toFixed(2)}s)
-                        </span>
-                    </p>
-                    <p className="segment-text">{segmentText}</p>
-                </div>
-            );
+                const style = getSpeakerStyle(segment.speaker);
+                const segmentText = segment.words.join(' ');
+                return (
+                    <span key={`segment-${segIndex}`} className="diarized-part" style={{ marginRight: 10 }}>
+                        <strong className="speaker-inline" style={{ color: style.color }}>
+                            {segment.speaker || 'Unknown Speaker'}:
+                        </strong>
+                        <span className="diarized-text"> {segmentText}</span>
+                    </span>
+                );
         });
     };
     return (
