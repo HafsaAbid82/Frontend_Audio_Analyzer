@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import './App.css';
 const SPEAKER_STYLES = {
     'Speaker_0': { color: '#007bff', background: '#e6f0ff' },
     'Speaker_1': { color: '#28a745', background: '#e9f8ec' },
