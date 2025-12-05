@@ -37,6 +37,7 @@ const initialAnalysisData = {
     missedSpeech: null,
     falseAlarm: null,
     timelineData: [], 
+    rawTranscription: '',
 };
 const App = () => {
     const [statusMessage, setStatusMessage] = useState('');
@@ -76,12 +77,8 @@ const App = () => {
                     filename: audioFile.name,
                     duration: result.duration || 0,
                     language: result.language || 'Unknown',
-                    // DER metrics are still stored but not displayed
-                    der: result.der !== undefined ? result.der : null,
-                    speakerError: result.speaker_error !== null ? result.speaker_error : null,
-                    missedSpeech: result.missed_speech !== null ? result.missed_speech : null,
-                    falseAlarm: result.false_alarm !== null ? result.false_alarm : null,
                     timelineData: result.timeline_data || [],
+                    rawTranscription: result.raw_transcription || '',
                 });
                 setStatusMessage('Analysis complete. Transcription results are displayed below.');
                 setStatusType('success');
@@ -138,6 +135,21 @@ const App = () => {
                     </span>
                 );
         });
+    };
+    const renderRawTranscription = () => {
+        if (!analysisData.isAnalyzed) {
+            return <p className="text-gray-500 italic">Upload an audio file to view the raw transcription.</p>;
+        }
+
+        if (!analysisData.rawTranscription) {
+            return <p className="text-gray-500 italic">No raw transcription text was returned by the model.</p>;
+        }
+
+        return (
+            <div className="transcription-output-container p-4 bg-white rounded-xl shadow-inner whitespace-pre-wrap font-serif text-lg leading-relaxed text-gray-800">
+                {analysisData.rawTranscription}
+            </div>
+        );
     };
     return (
         <div className="container">
@@ -217,7 +229,14 @@ const App = () => {
                     {renderTimeline()}
                 </div>
             </div>
-
+            <div className="section-box mt-8">
+                <h2 className="section-title">
+                    3. Transcription
+                </h2>
+                <div className="transcription-output-container">
+                    {renderRawTranscription()}
+                </div>
+            </div>
         </div>
     );
 };
